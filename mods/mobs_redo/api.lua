@@ -191,6 +191,22 @@ local get_velocity = function(self)
 
 	local v = self.object:get_velocity()
 
+	if not v then
+		local properties = self.object:get_properties(
+		)
+		print(
+			"get_velocity failed on:"
+		)
+		for k, v in pairs(
+			properties
+		) do
+			print(
+				"property " .. k
+			)
+		end
+		return
+	end
+
 	return (v.x * v.x + v.z * v.z) ^ 0.5
 end
 
