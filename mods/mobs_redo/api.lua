@@ -160,9 +160,27 @@ local set_velocity = function(self, v)
 
 	local yaw = (self.object:get_yaw() or 0) + self.rotate
 
+	local velocity = self.object:get_velocity()
+
+	if not velocity then
+		local properties = self.object:get_properties(
+		)
+		print(
+			"set_velocity failed on:"
+		)
+		for k, v in pairs(
+			properties
+		) do
+			print(
+				"property " .. k
+			)
+		end
+		return
+	end
+
 	self.object:set_velocity({
 		x = (sin(yaw) * -v) + c_x,
-		y = self.object:get_velocity().y,
+		y = velocity.y,
 		z = (cos(yaw) * v) + c_y,
 	})
 end
