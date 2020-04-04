@@ -44,13 +44,20 @@ function player_api.set_model(player, model_name)
 			mesh = model_name,
 			textures = player_textures[name] or model.textures,
 			visual = "mesh",
-			visual_size = model.visual_size or {x=1, y=1},
+			visual_size = model.visual_size or {x = 1, y = 1},
+			collisionbox = model.collisionbox or {-0.3, 0.0, -0.3, 0.3, 1.7, 0.3},
+			stepheight = model.stepheight or 0.6,
+			eye_height = model.eye_height or 1.47,
 		})
 		player_api.set_animation(player, "stand")
 	else
 		player:set_properties({
-			textures = { "player.png", "player_back.png", },
+			textures = {"player.png", "player_back.png"},
 			visual = "upright_sprite",
+			visual_size = {x = 1, y = 2},
+			collisionbox = {-0.3, 0.0, -0.3, 0.3, 1.75, 0.3},
+			stepheight = 0.6,
+			eye_height = 1.625,
 		})
 	end
 	player_model[name] = model_name
@@ -58,8 +65,10 @@ end
 
 function player_api.set_textures(player, textures)
 	local name = player:get_player_name()
-	player_textures[name] = textures
-	player:set_properties({textures = textures,})
+	local model = models[player_model[name]]
+	local model_textures = model and model.textures or nil
+	player_textures[name] = textures or model_textures
+	player:set_properties({textures = textures or model_textures,})
 end
 
 function player_api.set_animation(player, anim_name, speed)
