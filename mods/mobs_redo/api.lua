@@ -827,8 +827,12 @@ local do_jump = function(self)
 	self.facing_fence = false
 
 	-- something stopping us while moving?
+	local self_velocity = get_velocity(
+		self
+	)
 	if self.state ~= "stand"
-	and get_velocity(self) > 0.5
+	and self_velocity
+	and self_velocity > 0.5
 	and self.object:get_velocity().y ~= 0 then
 		return false
 	end
