@@ -852,6 +852,21 @@ local do_jump = function(self)
 	end
 
 	-- where is front
+	if not yaw then
+		local properties = self.object:get_properties(
+		)
+		print(
+			"do_jump failed on:"
+		)
+		for k, v in pairs(
+			properties
+		) do
+			print(
+				"property " .. k
+			)
+		end
+		return false
+	end
 	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)
 	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)
 
