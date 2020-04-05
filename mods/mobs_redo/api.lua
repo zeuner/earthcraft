@@ -676,6 +676,21 @@ local is_at_cliff = function(self)
 	end
 
 	local yaw = self.object:get_yaw()
+	if not yaw then
+		local properties = self.object:get_properties(
+		)
+		print(
+			"is_at_cliff failed on:"
+		)
+		for k, v in pairs(
+			properties
+		) do
+			print(
+				"property " .. k
+			)
+		end
+		return false
+	end
 	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)
 	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)
 	local pos = self.object:get_pos()
