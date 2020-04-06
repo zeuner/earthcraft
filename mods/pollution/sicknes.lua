@@ -169,7 +169,7 @@ minetest.register_globalstep(function(dtime)
 					
 				end
 
-				if ob.object==nil or ob.object:getpos()==nil then
+				if ob.object==nil or ob.object:get_pos()==nil then
 					chanse=-1
 					pollution_unsetsicknes(ob,i)
 				end

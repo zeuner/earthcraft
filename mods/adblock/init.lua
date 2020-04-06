@@ -19,7 +19,7 @@ minetest.register_globalstep(function(dtime)
 		timer = 0
 		for _,player in ipairs(minetest.get_connected_players()) do
 			local name = player:get_player_name()
-			local pos = player:getpos()
+			local pos = player:get_pos()
 			if adusers[name] and adusers[name] == -1 then
 				minetest.show_formspec(name, "adblock:main",
 					form ..
