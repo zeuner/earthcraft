@@ -102,7 +102,7 @@ minetest.register_globalstep(function(dtime)
 		local sicknes=math.random (5)
 		local ppos
 		for i, player in pairs(minetest.get_connected_players()) do
-			ppos=player:getpos()
+			ppos=player:get_pos()
 			local name=minetest.get_node(ppos).name
 
 			--if swiming in toxic water
