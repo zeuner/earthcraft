@@ -1541,6 +1541,13 @@ local general_attack = function(self)
 	end
 
 	local s = self.object:get_pos()
+	if not s then
+		console.log(
+			"warning",
+			"entity disappeared in general_attack"
+		)
+		return
+	end
 	local objs = minetest.get_objects_inside_radius(s, self.view_range)
 
 	-- remove entities we aren't interested in
