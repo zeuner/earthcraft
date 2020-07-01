@@ -1542,7 +1542,7 @@ local general_attack = function(self)
 
 	local s = self.object:get_pos()
 	if not s then
-		console.log(
+		minetest.log(
 			"warning",
 			"entity disappeared in general_attack"
 		)
