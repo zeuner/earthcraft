@@ -1730,6 +1730,13 @@ local follow_flop = function(self)
 	and self.state ~= "runaway" then
 
 		local s = self.object:get_pos()
+		if not s then
+			minetest.log(
+				"warning",
+				"entity disappeared in follow_flop"
+			)
+			return
+		end
 		local players = minetest.get_connected_players()
 
 		for n = 1, #players do
