@@ -109,6 +109,9 @@ local function pollution_mob_updateyaw(self)
 	local yaw = math.atan(vec.z/vec.x)+math.pi/2
 
 	if pos.x > folow.x then yaw = yaw+math.pi end
+	if yaw ~= yaw then
+		return self
+	end
 	self.object:setyaw(yaw)
 	if self.attack==1 then pollution_mob_attack(self) end
 	return self

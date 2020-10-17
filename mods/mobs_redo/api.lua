@@ -163,18 +163,6 @@ local set_velocity = function(self, v)
 	local velocity = self.object:get_velocity()
 
 	if not velocity then
-		local properties = self.object:get_properties(
-		)
-		print(
-			"set_velocity failed on:"
-		)
-		for k, v in pairs(
-			properties
-		) do
-			print(
-				"property " .. k
-			)
-		end
 		return
 	end
 
@@ -192,18 +180,6 @@ local get_velocity = function(self)
 	local v = self.object:get_velocity()
 
 	if not v then
-		local properties = self.object:get_properties(
-		)
-		print(
-			"get_velocity failed on:"
-		)
-		for k, v in pairs(
-			properties
-		) do
-			print(
-				"property " .. k
-			)
-		end
 		return
 	end
 
@@ -677,18 +653,6 @@ local is_at_cliff = function(self)
 
 	local yaw = self.object:get_yaw()
 	if not yaw then
-		local properties = self.object:get_properties(
-		)
-		print(
-			"is_at_cliff failed on:"
-		)
-		for k, v in pairs(
-			properties
-		) do
-			print(
-				"property " .. k
-			)
-		end
 		return false
 	end
 	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)
@@ -747,6 +711,10 @@ local do_env_damage = function(self)
 	-- remove mob if standing inside ignore node
 	if self.standing_in == "ignore" then
 		self.object:remove()
+		return
+	end
+
+	if not pos then
 		return
 	end
 
@@ -830,6 +798,10 @@ end
 
 -- jump if facing a solid node (not fences or gates)
 local do_jump = function(self)
+	if not self.object:get_pos(
+	) then
+		return
+	end
 
 	if not self.jump
 	or self.jump_height == 0
@@ -868,18 +840,6 @@ local do_jump = function(self)
 
 	-- where is front
 	if not yaw then
-		local properties = self.object:get_properties(
-		)
-		print(
-			"do_jump failed on:"
-		)
-		for k, v in pairs(
-			properties
-		) do
-			print(
-				"property " .. k
-			)
-		end
 		return false
 	end
 	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)
@@ -1542,10 +1502,6 @@ local general_attack = function(self)
 
 	local s = self.object:get_pos()
 	if not s then
-		minetest.log(
-			"warning",
-			"entity disappeared in general_attack"
-		)
 		return
 	end
 	local objs = minetest.get_objects_inside_radius(s, self.view_range)
@@ -1640,7 +1596,6 @@ end
 
 -- find someone to runaway from
 local runaway_from = function(self)
-
 	if not self.runaway_from then
 		return
 	end
@@ -1731,10 +1686,6 @@ local follow_flop = function(self)
 
 		local s = self.object:get_pos()
 		if not s then
-			minetest.log(
-				"warning",
-				"entity disappeared in follow_flop"
-			)
 			return
 		end
 		local players = minetest.get_connected_players()
@@ -1874,7 +1825,6 @@ end
 
 -- execute current state (stand, walk, run, attacks)
 local do_states = function(self, dtime)
-
 	local yaw = self.object:get_yaw() or 0
 
 	if self.state == "stand" then
@@ -1883,6 +1833,9 @@ local do_states = function(self, dtime)
 
 			local lp = nil
 			local s = self.object:get_pos()
+			if not s then
+				return
+			end
 			local objs = minetest.get_objects_inside_radius(s, 3)
 
 			for n = 1, #objs do
@@ -1929,6 +1882,9 @@ local do_states = function(self, dtime)
 	elseif self.state == "walk" then
 
 		local s = self.object:get_pos()
+		if not s then
+			return
+		end
 		local lp = nil
 
 		-- is there something I need to avoid?
@@ -2727,7 +2683,8 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 		do_attack(self, hitter)
 
 		-- alert others to the attack
-		local objs = minetest.get_objects_inside_radius(hitter:get_pos(), self.view_range)
+		local hitter_pos = hitter:get_pos()
+		local objs = minetest.get_objects_inside_radius(hitter_pos, self.view_range)
 		local obj = nil
 
 		for n = 1, #objs do
@@ -2998,6 +2955,9 @@ local mob_step = function(self, dtime)
 	end
 
 	local pos = self.object:get_pos()
+	if not pos then
+		return
+	end
 	local yaw = 0
 
 	-- get node at foot level every quarter second

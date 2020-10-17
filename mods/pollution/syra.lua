@@ -184,12 +184,20 @@ minetest.register_abm({
 	chance = 4,
 	action = function(pos)
 		local dmg=0
+		if not pos then
+			return
+		end
 		for i, ob in pairs(minetest.get_objects_inside_radius(pos, 4)) do
 			if ob:get_luaentity() and ob:get_luaentity().name=="pollution:axovy" then dmg=1 end
 			if dmg==0 and minetest.get_node(ob:getpos()).name~="pollution:acid_fire" and minetest.registered_nodes[minetest.get_node(ob:getpos()).name].walkable==false then
 				ob:set_hp(ob:get_hp()-8)
 				ob:punch(ob, {full_punch_interval=1.0,damage_groups={fleshy=4}}, "default:bronze_pick", nil)
-				minetest.set_node(ob:getpos(), {name ="pollution:acid_fire"})
+				local op = ob:getpos(
+				)
+				if not op then
+					return
+				end
+				minetest.set_node(op, {name ="pollution:acid_fire"})
 			end
 		end
 
