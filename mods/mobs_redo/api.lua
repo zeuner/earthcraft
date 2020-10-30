@@ -2001,6 +2001,13 @@ local do_states = function(self, dtime)
 
 		-- calculate distance from mob and enemy
 		local s = self.object:get_pos()
+		if not s then
+			minetest.log(
+				'warning',
+				'object disappeared in do_states'
+			)
+			return
+		end
 		local p = self.attack:get_pos() or s
 		local dist = get_distance(p, s)
 
