@@ -125,6 +125,17 @@ local collision = function(self)
 	local x, z = 0, 0
 	local width = -self.collisionbox[1] + self.collisionbox[4] + 0.5
 
+ 	if not pos then
+		minetest.log(
+			"warning",
+			"object disappeared in collision"
+		)
+		return {
+			x,
+			z,
+		}
+ 	end
+
 	for _,object in ipairs(minetest.get_objects_inside_radius(pos, width)) do
 
 		if object:is_player()
@@ -1601,6 +1612,13 @@ local runaway_from = function(self)
 	end
 
 	local s = self.object:get_pos()
+	if not s then
+		minetest.log(
+			'warning',
+			'object disappeared in runaway_from'
+		)
+		return
+	end
 	local p, sp, dist, pname
 	local player, obj, min_player, name
 	local min_dist = self.view_range + 1
